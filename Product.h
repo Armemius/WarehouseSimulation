@@ -15,6 +15,8 @@ public:
 	double freshness();
 	void rot();
 	bool isRotten();
+
+	friend int main();
 private:
 	std::string name_ = "N/A";
 	int weight_ = 0;
@@ -33,7 +35,6 @@ private:
 #define WATER Product("water", 500, 25, 30)
 #define BREAD Product("bread", 300, 80, 8)
 #define CAKE Product("cake", 500, 500, 16)
-
 #define NAPKINS Product("napkins", 100, 150)
 #define SOAP Product("soap", 100, 250)
 #define SHAMPOO Product("shampoo", 200, 400)

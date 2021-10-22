@@ -8,8 +8,9 @@ void TransferService::addTrans(Transmission trans) {
 }
 
 void TransferService::process() {
-	for (auto it = packages_.begin(); it != packages_.begin();) {
-		if (it->count == 0) {
+	for (auto it = packages_.begin(); it != packages_.end();) {
+		if (it->time == 0) {
+			if (it->dest != nullptr)
 			it->dest->processTransmission(*it);
 			packages_.erase(it++);
 			continue;
