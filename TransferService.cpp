@@ -4,6 +4,8 @@
 std::list<Transmission> TransferService::packages_;
 
 void TransferService::addTrans(Transmission trans) {
+	if (trans.dest == nullptr)
+		return;
 	packages_.push_back(trans);
 }
 

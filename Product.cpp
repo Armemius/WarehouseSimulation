@@ -43,3 +43,19 @@ void Product::rot() {
 bool Product::isRotten() {
 	return freshness() <= 0;
 }
+
+std::tr1::unordered_map<std::string, const Product> Product::list = {
+	{"egg", Product("egg", 300, 50, 14)},
+	{"fish", Product("fish", 500, 750, 18)},
+	{"meat", Product("meat", 500, 600, 20)},
+	{"apple", Product("apple", 400, 30, 9)},
+	{"pear", Product("pear", 400, 40, 9)},
+	{"milk", Product("milk", 500, 100, 8)},
+	{"water", Product("water", 500, 25, 30)},
+	{"bread", Product("bread", 300, 80, 8)},
+	{"cake", Product("cake", 500, 500, 16)},
+	{"napkins", Product("napkins", 100, 150)},
+	{"soap", Product("soap", 100, 250)},
+	{"shampoo", Product("shampoo", 200, 400)},
+	{"coal", Product("coal", 500, 200)}
+};

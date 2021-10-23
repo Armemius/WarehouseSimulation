@@ -1,22 +1,23 @@
 #include "Commands.h"
 
-Request::Request(Product type, int count, ITransferPoint* dest) :
+Request::Request(std::string type, int count, ITransferPoint* dest) :
 	type(type),
 	count(count),
 	dest(dest){}
 
-Answer::Answer(bool affirmative, int count, ITransferPoint* dest) :
+Answer::Answer(std::string type, bool affirmative, int count, ITransferPoint* dest) :
+	type(type),
 	affirmative(affirmative),
 	count(count),
 	dest(dest) {}
 
-Order::Order(int price, int count, ITransferPoint* dest) :
+Order::Order(std::string type, int price, int count, ITransferPoint* dest) :
+	type(type),
 	price(price),
 	count(count),
 	dest(dest) {}
 
-Transmission::Transmission(Package pack, int count, ITransferPoint* dest, int time) :
-	pack(pack),
-	count(count),
+Transmission::Transmission(std::vector<Package> packs, ITransferPoint* dest, int time) :
+	packs(packs),
 	dest(dest),
 	time(time) {}
