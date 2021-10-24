@@ -55,6 +55,13 @@ int Storage::count() {
 	return store_.size();
 }
 
+int Storage::prodCount() {
+	int cnt = 0;
+	for (auto it : store_)
+		cnt += it.count();
+	return cnt;
+}
+
 void Storage::setVCargo(int value) {
 	virtualCargo_ = value;
 }

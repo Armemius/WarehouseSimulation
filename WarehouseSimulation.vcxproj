@@ -140,9 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="Consumer.h" />
     <ClInclude Include="ITransferPoint.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="Product.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="Supplier.h" />
     <ClInclude Include="TransferService.h" />
@@ -150,9 +152,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Commands.cpp" />
+    <ClCompile Include="Consumer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Package.cpp" />
     <ClCompile Include="Product.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="Supplier.cpp" />
     <ClCompile Include="TransferService.cpp" />

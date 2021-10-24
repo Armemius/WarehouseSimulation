@@ -1,7 +1,51 @@
 #include "Warehouse.h"
 #include <random>
 
-Warehouse::Warehouse() {}
+Warehouse::Warehouse(Supplier* supp) : 
+	supp_(supp) {
+	for (int i = 0; i < Product::names.size(); ++i) {
+		demand_.insert({ Product::names[i], 0 });
+		dayDemand_.insert({ Product::names[i], 0 });
+	}
+}
+
+void Warehouse::rot() {
+	for (auto& it : storages_) {
+		int i = 0;
+		for (auto& jt : it.second.store_) {
+			jt.rot();
+			if (jt.isRotten()) {
+				auto iter = it.second.store_.begin();
+				std::advance(iter, i);
+				it.second.store_.erase(iter);
+			}
+			++i;
+		}
+	}
+}
+
+void Warehouse::process() {
+	for (auto it : dayDemand_) {
+		it.second = 0;
+	}
+	for (auto it : requests_) {
+		dayDemand_[it.type] += it.count;
+	}
+	if (isFirst_) {
+		demand_ = dayDemand_;
+		isFirst_ = false;
+	}
+	/*
+	* Warehouse -> Consumers
+	*/
+	for (auto it : dayDemand_) {
+		demand_[it.first] = (demand_[it.first] + dayDemand_[it.first]) / 2;
+		int diff = demand_[it.first] * 3 - storages_[it.first].prodCount();
+		if (diff > 0 && diff >= 50) {
+			request(Request(it.first, demand_[it.first] * 3, this), supp_);
+		}
+	}
+}
 
 // Implementation
 const std::string& Warehouse::name() {

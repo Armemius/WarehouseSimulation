@@ -38,6 +38,22 @@ bool Product::isRotten() {
 	return freshness() <= 0;
 }
 
+std::vector<std::string> Product::names = {
+	"egg",
+	"fish",
+	"meat",
+	"apple",
+	"pear",
+	"milk",
+	"water",
+	"bread",
+	"cake",
+	"napkins",
+	"soap",
+	"shampoo",
+	"coal"
+};
+
 std::tr1::unordered_map<std::string, const Product> Product::list = {
 	{"egg", Product("egg", 50, 14)},
 	{"fish", Product("fish", 750, 18)},

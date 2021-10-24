@@ -19,6 +19,9 @@
     <Filter Include="Файлы заголовков\TransferService">
       <UniqueIdentifier>{5f4c2d3e-1002-474e-93ed-1976797a04bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\TransferPoints">
+      <UniqueIdentifier>{e55820ae-3b50-4349-bbde-5c289895a611}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Package.h">
@@ -39,11 +42,17 @@
     <ClInclude Include="Storage.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Warehouse.h">
+    <ClInclude Include="Simulation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Consumer.h">
+      <Filter>Файлы заголовков\TransferPoints</Filter>
+    </ClInclude>
     <ClInclude Include="Supplier.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\TransferPoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Warehouse.h">
+      <Filter>Файлы заголовков\TransferPoints</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +78,12 @@
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
     <ClCompile Include="Supplier.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="Consumer.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>

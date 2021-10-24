@@ -16,11 +16,14 @@ public:
 	int cargo();
 	int maxCargo();
 	int count();
+	int prodCount();
 
 	void setVCargo(int value);
 	int getVCargo();
 
 	const Package& operator[](int index);
+
+	friend class Warehouse;
 private:
 	int cargo_ = 0;
 	int virtualCargo_ = 0;

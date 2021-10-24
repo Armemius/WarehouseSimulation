@@ -5,20 +5,21 @@
 #include <vector>
 #include <unordered_map>
 
-typedef std::tr1::unordered_map<std::string, Storage> hashmap;
-
 class Warehouse : public ITransferPoint {
 public:
-	Warehouse();
-	void test() {
-		request(Request("egg", 666, this), &supp_);
-	}
+	Warehouse(Supplier* supp);
 
-	friend int main();
+	void rot();
+	void process();
+
+	friend class Simulation;
 private:
+	bool isFirst_ = true;
 	int cash_ = 1000000;
-	Supplier supp_;
-	hashmap storages_ = {
+	Supplier* supp_;
+	std::unordered_map<std::string, int> dayDemand_;
+	std::unordered_map<std::string, int> demand_;
+	std::unordered_map<std::string, Storage> storages_ = {
 		{ "egg", Storage("egg", 100) },
 		{ "fish", Storage("fish", 100) },
 		{ "meat", Storage("meat", 100) },

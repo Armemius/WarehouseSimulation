@@ -17,4 +17,6 @@ public:
 	void answer(Answer ans, ITransferPoint* dest) override;
 	void order(Order ord, ITransferPoint* dest) override;
 	void transmit(Transmission trans) override;
+
+	friend class Simulation;
 };

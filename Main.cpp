@@ -1,12 +1,10 @@
 #include <iostream>
-#include "Package.h"
-#include "TransferService.h"
-#include "Storage.h"
-#include "Warehouse.h"
+#include "Simulation.h"
 
 int main() {
-	Warehouse warehouse;
-	warehouse.test();
+	Simulation simulation(5, 10);
+
+	Warehouse warehouse(new Supplier());
 
 	std::cout << TransferService::packages_.size() << "\n";
 
@@ -27,8 +25,8 @@ int main() {
 	TransferService::process();
 	TransferService::process();
 	
-	std::cout << warehouse.cash_ << "\n";
-	std::cout << warehouse.storages_["egg"].cargo();
+	//std::cout << warehouse.cash_ << "\n";
+	//std::cout << warehouse.storages_["egg"].cargo();
 
 
 	Package pack = Package(Product::list["meat"], 10);

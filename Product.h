@@ -16,6 +16,7 @@ public:
 	void rot();
 	bool isRotten();
 	
+	static std::vector<std::string> names;
 	static std::tr1::unordered_map<std::string, const Product> list;
 private:
 	std::string name_ = "N/A";
