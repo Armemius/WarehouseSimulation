@@ -5,7 +5,6 @@ class Package : public Product {
 public:
 	Package();
 	Package(Product type, int count);
-	int weightAll();
 	int priceAll();
 	int count();
 private:

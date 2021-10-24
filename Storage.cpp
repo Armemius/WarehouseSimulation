@@ -14,16 +14,16 @@ Storage::Storage(std::list<Package> store, int maxCargo) :
 	if (store.size() == 0)
 		throw std::exception("Storage: store size must be greater than 0");
 	for (auto it = store.begin(); it != store.end(); ++it) {
-		cargo_ += it->weightAll();
+		cargo_++;
 		if (cargo_ > maxCargo_)
-			throw std::exception("Storage: packages weight is too big to hold");
+			throw std::exception("Storage: too many packages to hold");
 	}
 }
 
 bool Storage::add(Package pack) {
-	if (cargo_ + pack.weightAll() > maxCargo_ && pack.name() == id_)
+	if (cargo_ == maxCargo_)
 		return false;
-	cargo_ += pack.weightAll();
+	cargo_++;
 	store_.push_back(pack);
 	return true;
 }
@@ -33,7 +33,7 @@ Package& Storage::get(int index) {
 		throw std::exception("Storage: index out of bounds");
 	std::list<Package>::iterator it = store_.begin();
 	std::advance(it, index);
-	cargo_ -= it->weightAll();
+	cargo_--;
 	Package& pack = *it;
 	store_.erase(it);
 	return pack;

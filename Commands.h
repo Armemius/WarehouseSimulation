@@ -42,7 +42,7 @@ public:
 
 class Transmission {
 public:
-	Transmission(std::vector<Package> packs, ITransferPoint* dest, int time);
+	Transmission(std::vector<Package> packs, ITransferPoint* dest = nullptr, int time = 0);
 	std::vector<Package> packs;
 	ITransferPoint* dest = nullptr;
 	int time = 0;

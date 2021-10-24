@@ -144,6 +144,7 @@
     <ClInclude Include="Package.h" />
     <ClInclude Include="Product.h" />
     <ClInclude Include="Storage.h" />
+    <ClInclude Include="Supplier.h" />
     <ClInclude Include="TransferService.h" />
     <ClInclude Include="Warehouse.h" />
   </ItemGroup>
@@ -153,6 +154,7 @@
     <ClCompile Include="Package.cpp" />
     <ClCompile Include="Product.cpp" />
     <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="Supplier.cpp" />
     <ClCompile Include="TransferService.cpp" />
     <ClCompile Include="Warehouse.cpp" />
   </ItemGroup>

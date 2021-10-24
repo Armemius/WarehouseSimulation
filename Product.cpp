@@ -2,14 +2,12 @@
 
 Product::Product() = default;
 
-Product::Product(std::string name, int weight, int price) : 
+Product::Product(std::string name, int price) : 
 	name_(name),
-	weight_(weight),
 	price_(price) {}
 
-Product::Product(std::string name, int weight, int price, int expiryTime) :
+Product::Product(std::string name, int price, int expiryTime) :
 	name_(name),
-	weight_(weight),
 	price_(price),
 	expiryTime_(expiryTime),
 	maxExpiryTime_(expiryTime),
@@ -18,19 +16,15 @@ Product::Product(std::string name, int weight, int price, int expiryTime) :
 		throw std::exception("Product: expiry time must be greater than 1");
 }
 
-const std::string& Product::name() {
+const std::string& Product::name() const {
 	return name_;
 }
 
-int Product::weight() {
-	return weight_;
-}
-
-int Product::price() {
+int Product::price() const {
 	return price_;
 }
 
-double Product::freshness() {
+double Product::freshness() const {
 	return isRottable_ ? expiryTime_ * 1.0 / maxExpiryTime_ : 1;
 }
 
@@ -45,17 +39,17 @@ bool Product::isRotten() {
 }
 
 std::tr1::unordered_map<std::string, const Product> Product::list = {
-	{"egg", Product("egg", 300, 50, 14)},
-	{"fish", Product("fish", 500, 750, 18)},
-	{"meat", Product("meat", 500, 600, 20)},
-	{"apple", Product("apple", 400, 30, 9)},
-	{"pear", Product("pear", 400, 40, 9)},
-	{"milk", Product("milk", 500, 100, 8)},
-	{"water", Product("water", 500, 25, 30)},
-	{"bread", Product("bread", 300, 80, 8)},
-	{"cake", Product("cake", 500, 500, 16)},
-	{"napkins", Product("napkins", 100, 150)},
-	{"soap", Product("soap", 100, 250)},
-	{"shampoo", Product("shampoo", 200, 400)},
-	{"coal", Product("coal", 500, 200)}
+	{"egg", Product("egg", 50, 14)},
+	{"fish", Product("fish", 750, 18)},
+	{"meat", Product("meat", 600, 20)},
+	{"apple", Product("apple", 30, 9)},
+	{"pear", Product("pear", 40, 9)},
+	{"milk", Product("milk", 100, 8)},
+	{"water", Product("water", 25, 30)},
+	{"bread", Product("bread", 80, 8)},
+	{"cake", Product("cake", 500, 16)},
+	{"napkins", Product("napkins", 150)},
+	{"soap", Product("soap", 250)},
+	{"shampoo", Product("shampoo", 400)},
+	{"coal", Product("coal", 200)}
 };

@@ -5,10 +5,6 @@ Package::Package() = default;
 Package::Package(Product type, int count) : Product(type),
 	count_(count) {}
 
-int Package::weightAll() {
-	return this->weight() * this->count_;
-}
-
 int Package::priceAll() {
 	return this->price() * this->count_;
 }
