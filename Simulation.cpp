@@ -1,5 +1,6 @@
 #include "Simulation.h"
 #include "Storage.h"
+#include <unordered_map>
 
 // Report
 Report::Report(Warehouse warehouse, std::vector<Consumer> consumers) : 
@@ -26,8 +27,10 @@ std::ostream& operator<<(std::ostream& out, const Report& rep) {
 		for (auto& jt : it.weights_) {
 			out << "Weight(" << jt.first << "):" << jt.second << "\n\r";
 		}
+		auto vrt = it.virtualProducts_.begin();
 		for (auto& jt : it.products_) {
-			out << "Stored(" << jt.first << "):" << jt.second << "\n\r";
+			const std::string sus = jt.first;
+			out << "Stored(" << jt.first << "):" << jt.second << " + " << it.virtualProducts_.at(jt.first) << " = " << jt.second + it.virtualProducts_.at(jt.first) << "\n\r";
 		}
 
 		out << "\n\r";
@@ -36,7 +39,7 @@ std::ostream& operator<<(std::ostream& out, const Report& rep) {
 	out << "\n\r**[Transfer]**\n\r";
 	for (auto& it : rep.packages_) {
 		std::string name = it.dest->name();
-		out << "(" << it.packs[0].name() << " x" << it.packs.size() << "; to: " << name << ")\n\r";
+		out << "(" << it.packs[0].name() << " x" << it.packs.size() << "; to: " << name << "; in:" << it.time << ")\n\r";
 	}
 	return out;
 }
@@ -50,7 +53,7 @@ Simulation::Simulation(int consumers, int foodTypes) :
 	warehouse_(Warehouse(&supplier_)) {}
 
 void Simulation::process() {
-	//warehouse_.rot(); NEEDS FIX
+	warehouse_.rot();
 	TransferService::process();
 	for (auto& it : consumers_) {
 		it.reloadWeights();

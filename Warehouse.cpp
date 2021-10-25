@@ -11,15 +11,12 @@ Warehouse::Warehouse(Supplier* supp) :
 
 void Warehouse::rot() {
 	for (auto& it : storages_) {
-		int i = 0;
-		for (auto& jt : it.second.store_) {
-			jt.rot();
-			if (jt.isRotten()) {
-				auto iter = it.second.store_.begin();
-				std::advance(iter, i);
-				it.second.store_.erase(iter);
+		auto jt = it.second.store_.begin();
+		for (int i = 0; i < it.second.cargo_; ++i, ++jt) {
+			jt->rot();
+			if (jt->isRotten()) {
+				it.second.get(i--);
 			}
-			++i;
 		}
 	}
 }
@@ -35,9 +32,16 @@ void Warehouse::process() {
 		demand_ = dayDemand_;
 		isFirst_ = false;
 	}
+	auto ordersRemaining = dayDemand_;
 	for (auto& it : requests_) {
-		answer(Answer(it.type, true, it.count, this), it.dest);
+		if (ordersRemaining[it.type] < storages_[it.type].prodCount()) {
+			answer(Answer(it.type, true, it.count, this), it.dest);
+		} else {
+			answer(Answer(it.type, false, it.count, this), it.dest);
+		}
+		
 	}
+	requests_.clear();
 	for (auto& it : dayDemand_) {
 		demand_[it.first] = (demand_[it.first] + dayDemand_[it.first]) / 2;
 		int diff = demand_[it.first] * 3 - storages_[it.first].prodCount();
@@ -68,7 +72,7 @@ void Warehouse::processAnswer(Answer ans) {
 
 void Warehouse::processOrder(Order ord) {
 	cash_ += ord.price;
-	transmit(Transmission(std::vector<Package>{Package(Product::list[ord.type], ord.count) }, ord.dest));
+	transmit(Transmission(std::vector<Package>{Package(Product::list[ord.type], ord.count) }, ord.dest, 1));
 }
 
 void Warehouse::processTransmission(Transmission trans) {

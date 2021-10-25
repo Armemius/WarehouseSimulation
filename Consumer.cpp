@@ -9,7 +9,7 @@ Consumer::Consumer(Warehouse* warehouse, int types) :
 		std::random_device rand_dev;
 		std::mt19937 rand_engine(rand_dev());
 		weights_.insert({ Product::names[i], randx(rand_engine) });
-		products_.insert({ Product::names[i], 1000 });
+		products_.insert({ Product::names[i], 0 });
 		virtualProducts_.insert({ Product::names[i], 0 });
 	}
 }
@@ -29,9 +29,10 @@ void Consumer::process() {
 	for (int i = 0; i < types_; ++i) {
 		const std::string& name = Product::names[i];
 		products_[name] -= weights_[name];
-		int diff = 1000 - products_[name];
-		if (diff < 500 && diff > 0) {
-			request(Request(name, diff * 2, this), warehouse_);
+		int cnt = products_[name] + virtualProducts_[name];
+		if (cnt < 0) {
+			std::cout << name << " <-> " << products_[name] << "\n";
+			request(Request(name, weights_[name] * 4, this), warehouse_);
 		}
 	}
 }
@@ -47,7 +48,7 @@ void Consumer::processRequest(Request req) {
 
 void Consumer::processAnswer(Answer ans) {
 	if (!ans.affirmative) {
-		products_[ans.type] = 1300;
+		products_[ans.type] = 400;
 		return;
 	}
 	std::uniform_real_distribution<double> randx(1.05, 1.3);
@@ -64,6 +65,7 @@ void Consumer::processTransmission(Transmission trans) {
 	std::string name = trans.packs[0].name();
 	for (auto& pack : trans.packs) {
 		products_[name] += pack.count();
+		virtualProducts_[name] -= pack.count();
 	}
 }
 
@@ -76,6 +78,7 @@ void Consumer::answer(Answer ans, ITransferPoint* dest) {
 }
 
 void Consumer::order(Order ord, ITransferPoint* dest) {
+	virtualProducts_[ord.type] += ord.count;
 	dest->processOrder(ord);
 }
 
