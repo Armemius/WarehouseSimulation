@@ -9,7 +9,7 @@ class Transmission;
 
 class ITransferPoint abstract {
 public:
-	virtual const std::string& name() = 0;
+	virtual std::string name() = 0;
 	virtual void processRequest(Request req) = 0;
 	virtual void processAnswer(Answer ans) = 0;
 	virtual void processOrder(Order ord) = 0;

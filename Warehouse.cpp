@@ -25,20 +25,20 @@ void Warehouse::rot() {
 }
 
 void Warehouse::process() {
-	for (auto it : dayDemand_) {
+	for (auto& it : dayDemand_) {
 		it.second = 0;
 	}
-	for (auto it : requests_) {
+	for (auto& it : requests_) {
 		dayDemand_[it.type] += it.count;
 	}
 	if (isFirst_) {
 		demand_ = dayDemand_;
 		isFirst_ = false;
 	}
-	/*
-	* Warehouse -> Consumers
-	*/
-	for (auto it : dayDemand_) {
+	for (auto& it : requests_) {
+		answer(Answer(it.type, true, it.count, this), it.dest);
+	}
+	for (auto& it : dayDemand_) {
 		demand_[it.first] = (demand_[it.first] + dayDemand_[it.first]) / 2;
 		int diff = demand_[it.first] * 3 - storages_[it.first].prodCount();
 		if (diff > 0 && diff >= 50) {
@@ -48,7 +48,7 @@ void Warehouse::process() {
 }
 
 // Implementation
-const std::string& Warehouse::name() {
+std::string Warehouse::name() {
 	return "warehouse";
 }
 
@@ -67,7 +67,8 @@ void Warehouse::processAnswer(Answer ans) {
 }
 
 void Warehouse::processOrder(Order ord) {
-
+	cash_ += ord.price;
+	transmit(Transmission(std::vector<Package>{Package(Product::list[ord.type], ord.count) }, ord.dest));
 }
 
 void Warehouse::processTransmission(Transmission trans) {

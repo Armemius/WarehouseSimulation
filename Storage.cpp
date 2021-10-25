@@ -39,23 +39,23 @@ Package& Storage::get(int index) {
 	return pack;
 }
 
-int Storage::free() {
+int Storage::free() const {
 	return maxCargo_ - cargo_;
 }
 
-int Storage::cargo() {
+int Storage::cargo() const {
 	return cargo_;
 }
 
-int Storage::maxCargo() {
+int Storage::maxCargo() const {
 	return maxCargo_;
 }
 
-int Storage::count() {
+int Storage::count() const {
 	return store_.size();
 }
 
-int Storage::prodCount() {
+int Storage::prodCount() const {
 	int cnt = 0;
 	for (auto it : store_)
 		cnt += it.count();

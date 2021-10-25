@@ -8,7 +8,7 @@ public:
 	Supplier();
 	static std::unordered_map<std::string, const Supplier> list;
 	// Implementation
-	const std::string& name() override;
+	std::string name() override;
 	void processRequest(Request req) override;
 	void processAnswer(Answer ans) override;
 	void processOrder(Order ord) override;

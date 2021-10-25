@@ -3,6 +3,8 @@
 #include <string>
 #include <list>
 
+class Report;
+
 class Storage {
 public:
 	Storage();
@@ -12,11 +14,11 @@ public:
 	// True if added, false if not
 	bool add(Package pack);
 	Package& get(int index);
-	int free();
-	int cargo();
-	int maxCargo();
-	int count();
-	int prodCount();
+	int free() const;
+	int cargo() const;
+	int maxCargo() const;
+	int count() const;
+	int prodCount() const;
 
 	void setVCargo(int value);
 	int getVCargo();
@@ -24,6 +26,7 @@ public:
 	const Package& operator[](int index);
 
 	friend class Warehouse;
+	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
 private:
 	int cargo_ = 0;
 	int virtualCargo_ = 0;

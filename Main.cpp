@@ -1,36 +1,14 @@
+#define DEBUG
+
 #include <iostream>
 #include "Simulation.h"
 
 int main() {
 	Simulation simulation(5, 10);
-
-	Warehouse warehouse(new Supplier());
-
-	std::cout << TransferService::packages_.size() << "\n";
-
-	for (auto it = TransferService::packages_.begin(); it != TransferService::packages_.end(); ++it) {
-		for (auto sus : it->packs) {
-			std::cout << sus.count() << " ";
-		}
-		std::string str = it->dest->name();
-		std::cout << "\n" << it->time << " " << str;
+	for (int i = 0; i < 100; ++i) {
+		simulation.process();
 	}
-
-	
-
-	TransferService::process();
-	TransferService::process();
-	TransferService::process();
-	TransferService::process();
-	TransferService::process();
-	TransferService::process();
-	
-	//std::cout << warehouse.cash_ << "\n";
-	//std::cout << warehouse.storages_["egg"].cargo();
-
-
-	Package pack = Package(Product::list["meat"], 10);
-	Storage store = Storage(std::list<Package>{pack}, 1);
-	store.add(pack);
-	//std::cout << store.count();
+	simulation.process();
+	std::cout << simulation.report();
+	system("pause");
 }

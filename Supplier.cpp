@@ -3,7 +3,7 @@
 
 Supplier::Supplier() = default;
 
-const std::string& Supplier::name() {
+std::string Supplier::name() {
 	return "supplier";
 }
 
@@ -33,7 +33,7 @@ void Supplier::processOrder(Order ord) {
 		packs.push_back(Package(Product::list[ord.type], 25));
 		count -= 250;
 	}
-	std::uniform_int_distribution<int> randx(2, 5);
+	std::uniform_int_distribution<int> randx(1, 3);
 	std::random_device rand_dev;
 	std::mt19937 rand_engine(rand_dev());
 	transmit(Transmission(packs, ord.dest, randx(rand_engine)));

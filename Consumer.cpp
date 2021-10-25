@@ -20,6 +20,8 @@ void Consumer::reloadWeights() {
 		std::random_device rand_dev;
 		std::mt19937 rand_engine(rand_dev());
 		it->second += randx(rand_engine);
+		if (it->second < 0)
+			it->second = 0;
 	}
 }
 
@@ -28,14 +30,14 @@ void Consumer::process() {
 		const std::string& name = Product::names[i];
 		products_[name] -= weights_[name];
 		int diff = 1000 - products_[name];
-		if (diff < 0 && diff > 300) {
+		if (diff < 500 && diff > 0) {
 			request(Request(name, diff * 2, this), warehouse_);
 		}
 	}
 }
 
 // Implementation
-const std::string& Consumer::name() {
+std::string Consumer::name() {
 	return "consumer";
 }
 

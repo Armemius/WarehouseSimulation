@@ -9,7 +9,7 @@ public:
 	void process();
 
 	// Implementation
-	const std::string& name() override;
+	std::string name() override;
 	void processRequest(Request req) override;
 	void processAnswer(Answer ans) override;
 	void processOrder(Order ord) override;
@@ -20,6 +20,7 @@ public:
 	void transmit(Transmission trans) override;
 
 	friend class Simulation;
+	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
 private:
 	int types_;
 	Warehouse* warehouse_;
