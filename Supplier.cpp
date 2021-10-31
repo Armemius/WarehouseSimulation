@@ -3,7 +3,7 @@
 
 Supplier::Supplier() = default;
 
-std::string Supplier::name() {
+std::string Supplier::name() const {
 	return "supplier";
 }
 

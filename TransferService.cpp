@@ -12,8 +12,9 @@ void TransferService::addTrans(Transmission trans) {
 void TransferService::process() {
 	for (auto it = packages_.begin(); it != packages_.end();) {
 		if (it->time == 0) {
+			Transmission trans = *it;
 			if (it->dest != nullptr)
-			it->dest->processTransmission(*it);
+				const_cast<ITransferPoint*>(trans.dest)->processTransmission(trans);
 			packages_.erase(it++);
 			continue;
 		}

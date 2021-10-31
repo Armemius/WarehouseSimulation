@@ -38,7 +38,7 @@ void Consumer::process() {
 }
 
 // Implementation
-std::string Consumer::name() {
+std::string Consumer::name() const {
 	return "consumer";
 }
 

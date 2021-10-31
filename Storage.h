@@ -13,7 +13,7 @@ public:
 
 	// True if added, false if not
 	bool add(Package pack);
-	Package& get(int index);
+	Package get(int index);
 	int free() const;
 	int cargo() const;
 	int maxCargo() const;

@@ -17,7 +17,7 @@ Order::Order(std::string type, int price, int count, ITransferPoint* dest) :
 	count(count),
 	dest(dest) {}
 
-Transmission::Transmission(std::vector<Package> packs, ITransferPoint* dest, int time) :
+Transmission::Transmission(std::vector<Package> packs, const ITransferPoint* dest, int time) :
 	packs(packs),
 	dest(dest),
 	time(time) {}

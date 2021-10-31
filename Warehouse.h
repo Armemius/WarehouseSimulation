@@ -16,6 +16,17 @@ public:
 
 	friend class Simulation;
 	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
+
+	// Implementation
+	std::string name() const override;
+	void processRequest(Request req) override;
+	void processAnswer(Answer ans) override;
+	void processOrder(Order ord) override;
+	void processTransmission(Transmission trans) override;
+	void request(Request req, ITransferPoint* dest) override;
+	void answer(Answer ans, ITransferPoint* dest) override;
+	void order(Order ord, ITransferPoint* dest) override;
+	void transmit(Transmission trans) override;
 private:
 	bool isFirst_ = true;
 	int cash_ = 1000000;
@@ -38,14 +49,4 @@ private:
 		{ "coal", Storage("coal", 250) }
 	};
 	std::vector<Request> requests_;
-	// Implementation
-	std::string name() override;
-	void processRequest(Request req) override;
-	void processAnswer(Answer ans) override;
-	void processOrder(Order ord) override;
-	void processTransmission(Transmission trans) override;
-	void request(Request req, ITransferPoint* dest) override;
-	void answer(Answer ans, ITransferPoint* dest) override;
-	void order(Order ord, ITransferPoint* dest) override;
-	void transmit(Transmission trans) override;
 };

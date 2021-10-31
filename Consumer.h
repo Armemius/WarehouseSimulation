@@ -9,7 +9,7 @@ public:
 	void process();
 
 	// Implementation
-	std::string name() override;
+	std::string name() const override;
 	void processRequest(Request req) override;
 	void processAnswer(Answer ans) override;
 	void processOrder(Order ord) override;

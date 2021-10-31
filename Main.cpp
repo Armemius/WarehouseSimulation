@@ -4,12 +4,11 @@
 #include "Simulation.h"
 
 int main() {
-	Simulation simulation(1, 10);
-	for (int i = 0; true; ++i) {
-		std::cout << "Iteration " << i + 1 << ": \n\r";
+	Simulation simulation(3, 10);
+	for (int i = 0; i < 50; ++i) {
 		simulation.process();
+		system("cls");
 		std::cout << simulation.report();
 		system("pause");
-		system("cls");
 	}
 }

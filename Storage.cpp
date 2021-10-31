@@ -1,5 +1,6 @@
 #include "Storage.h"
 #include <iterator>
+#include <iostream>
 
 Storage::Storage() = default;
 
@@ -28,7 +29,7 @@ bool Storage::add(Package pack) {
 	return true;
 }
 
-Package& Storage::get(int index) {
+Package Storage::get(int index) {
 	if (index < 0 || store_.size() - 1 < index)
 		throw std::exception("Storage: index out of bounds");
 	std::list<Package>::iterator it = store_.begin();

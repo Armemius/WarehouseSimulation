@@ -45,12 +45,16 @@ std::ostream& operator<<(std::ostream& out, const Report& rep) {
 }
 
 // Simulation
-Simulation::Simulation() = default;
+Simulation::Simulation() {
+	TransferService::packages_.clear();
+}
 
 Simulation::Simulation(int consumers, int foodTypes) : 
 	foodTypes_(foodTypes),
 	consumers_(std::vector<Consumer>(consumers, Consumer(&warehouse_, foodTypes))),
-	warehouse_(Warehouse(&supplier_)) {}
+	warehouse_(Warehouse(&supplier_)) {
+	TransferService::packages_.clear();
+}
 
 void Simulation::process() {
 	warehouse_.rot();

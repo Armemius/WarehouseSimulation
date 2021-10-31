@@ -34,16 +34,57 @@ void Warehouse::process() {
 	}
 	auto ordersRemaining = dayDemand_;
 	for (auto& it : requests_) {
-		if (ordersRemaining[it.type] < storages_[it.type].prodCount()) {
-			answer(Answer(it.type, true, it.count, this), it.dest);
-		} else {
-			answer(Answer(it.type, false, it.count, this), it.dest);
+		double koef = storages_[it.type].prodCount() * 1.0 / dayDemand_[it.type];
+		if (koef == 0) {
+			answer(Answer(it.type, false, 0, this), it.dest);
+			continue;
 		}
-		
+		int count;
+		if (koef < 1)
+			count = it.count * koef;
+		else
+			count = it.count;
+		std::cout << count << " ";
+		count = count - count % 25 + std::round(count % 25 / 25.0) * 25;
+		std::cout << count << "\n\r";
+		int pack100 = 0, pack50 = 0, pack25 = 0;
+		for (auto& jt : storages_[it.type].store_) {
+			if (jt.count() == 100)
+				pack100++;
+			else if (jt.count() == 50)
+				pack50++;
+			else if (jt.count() == 25)
+				pack25++;
+			else
+				throw std::exception("Sussy package");
+		}
+		int req100 = std::min(count / 100, pack100), 
+			req50 = std::min((count - req100 * 100) / 50, pack50),
+			req25 = std::min((count - req100 * 100 - req50 * 50) / 25, pack25);
+		if (req100 == 0 && req50 == 0 && req25 == 0) {
+			answer(Answer(it.type, false, 0, this), it.dest);
+			continue;
+		}
+		int total = req100 * 100 + req50 * 50 + req25 * 25;
+		int index = 0;
+		for (auto& jt : storages_[it.type].store_) {
+			if (jt.count() == 100 && req100 > 0) {
+				req100--;
+				storages_[it.type].get(index--);
+			} else if (jt.count() == 50 && req50 > 0) {
+				req50--;
+				storages_[it.type].get(index--);
+			} else if (jt.count() == 25 && req25 > 0) {
+				req25--;
+				storages_[it.type].get(index--);
+			}
+			index++;
+		}
+		answer(Answer(it.type, true, total, this), it.dest);
 	}
 	requests_.clear();
 	for (auto& it : dayDemand_) {
-		demand_[it.first] = (demand_[it.first] + dayDemand_[it.first]) / 2;
+		demand_[it.first] = (demand_[it.first] * 9 + dayDemand_[it.first]) / 10;
 		int diff = demand_[it.first] * 3 - storages_[it.first].prodCount();
 		if (diff > 0 && diff >= 50) {
 			request(Request(it.first, demand_[it.first] * 3, this), supp_);
@@ -52,7 +93,7 @@ void Warehouse::process() {
 }
 
 // Implementation
-std::string Warehouse::name() {
+std::string Warehouse::name() const {
 	return "warehouse";
 }
 

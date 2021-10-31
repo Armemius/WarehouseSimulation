@@ -12,6 +12,7 @@ public:
 	static void addTrans(Transmission trans);
 	static void process();
 	friend class Report;
+	friend class Simulation;
 	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
 private:
 	TransferService();

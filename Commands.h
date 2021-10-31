@@ -42,8 +42,8 @@ public:
 
 class Transmission {
 public:
-	Transmission(std::vector<Package> packs, ITransferPoint* dest = nullptr, int time = 0);
+	Transmission(std::vector<Package> packs, const ITransferPoint* dest = nullptr, int time = 0);
 	std::vector<Package> packs;
-	ITransferPoint* dest = nullptr;
+	const ITransferPoint* dest;
 	int time = 0;
 };
