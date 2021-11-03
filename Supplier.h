@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include "ITransferPoint.h"
 #include "Commands.h"
 #include <unordered_map>

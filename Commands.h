@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include "Package.h"
 #include "ITransferPoint.h"
 #include <vector>

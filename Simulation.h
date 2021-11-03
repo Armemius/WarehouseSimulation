@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include "Supplier.h"
 #include "Consumer.h"
 #include "Warehouse.h"

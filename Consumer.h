@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include "Warehouse.h"
 
 class Consumer : public ITransferPoint {

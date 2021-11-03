@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include <list>
 #include <iostream>
 #include "Commands.h"

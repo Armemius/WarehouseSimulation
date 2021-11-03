@@ -41,7 +41,7 @@ Package Storage::get(int index) {
 }
 
 int Storage::free() const {
-	return maxCargo_ - cargo_;
+	return maxCargo_ - cargo_ - virtualCargo_;
 }
 
 int Storage::cargo() const {
@@ -65,6 +65,10 @@ int Storage::prodCount() const {
 
 void Storage::setVCargo(int value) {
 	virtualCargo_ = value;
+}
+
+void Storage::addVCargo(int value) {
+	virtualCargo_ += value;
 }
 
 int Storage::getVCargo() {

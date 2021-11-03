@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Consumer.h" />
+    <ClInclude Include="debug.h" />
     <ClInclude Include="ITransferPoint.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="Product.h" />

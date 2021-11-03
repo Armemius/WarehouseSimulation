@@ -44,9 +44,7 @@ void Warehouse::process() {
 			count = it.count * koef;
 		else
 			count = it.count;
-		std::cout << count << " ";
 		count = count - count % 25 + std::round(count % 25 / 25.0) * 25;
-		std::cout << count << "\n\r";
 		int pack100 = 0, pack50 = 0, pack25 = 0;
 		for (auto& jt : storages_[it.type].store_) {
 			if (jt.count() == 100)
@@ -84,10 +82,14 @@ void Warehouse::process() {
 	}
 	requests_.clear();
 	for (auto& it : dayDemand_) {
-		demand_[it.first] = (demand_[it.first] * 9 + dayDemand_[it.first]) / 10;
-		int diff = demand_[it.first] * 3 - storages_[it.first].prodCount();
-		if (diff > 0 && diff >= 50) {
-			request(Request(it.first, demand_[it.first] * 3, this), supp_);
+		const std::string name = it.first;
+		demand_[name] = (demand_[name] * 9 + dayDemand_[name]) / 10;
+		int diff = demand_[name] * 3 - storages_[name].prodCount();
+		if (diff >= 50) {
+			const int count = std::min(demand_[name] * 3, storages_[name].free() * 100);
+			storages_[name].addVCargo(count / 100 + count % 100 / 50 + count % 50 / 25);
+			if (count > 500)
+				request(Request(it.first, count, this), supp_);
 		}
 	}
 }
@@ -117,7 +119,13 @@ void Warehouse::processOrder(Order ord) {
 }
 
 void Warehouse::processTransmission(Transmission trans) {
+	std::uniform_real_distribution<double> defect(0.0, 1.0);
+	std::random_device rand_dev;
+	std::mt19937 rand_engine(rand_dev());
 	for (auto& pack : trans.packs) {
+		if (defect(rand_engine) < 0.05) {
+			continue;
+		}
 		if (!storages_[pack.name()].add(pack)) {
 			break;
 		}

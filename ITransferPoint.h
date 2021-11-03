@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include "Commands.h"
 #include "TransferService.h"
 

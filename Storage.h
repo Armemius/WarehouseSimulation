@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include "Package.h"
 #include <string>
 #include <list>
@@ -21,6 +22,7 @@ public:
 	int prodCount() const;
 
 	void setVCargo(int value);
+	void addVCargo(int value);
 	int getVCargo();
 
 	const Package& operator[](int index);

@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include "Product.h"
 
 class Package : public Product {

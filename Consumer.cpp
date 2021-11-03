@@ -31,7 +31,6 @@ void Consumer::process() {
 		products_[name] -= weights_[name];
 		int cnt = products_[name] + virtualProducts_[name];
 		if (cnt < 0) {
-			std::cout << name << " <-> " << products_[name] << "\n";
 			request(Request(name, weights_[name] * 4, this), warehouse_);
 		}
 	}

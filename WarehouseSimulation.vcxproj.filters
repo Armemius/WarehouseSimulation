@@ -54,6 +54,9 @@
     <ClInclude Include="Warehouse.h">
       <Filter>Файлы заголовков\TransferPoints</Filter>
     </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Product.cpp">
