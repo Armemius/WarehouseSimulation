@@ -10,7 +10,7 @@ class Storage {
 public:
 	Storage();
 	Storage(std::string id, int maxCargo);
-	Storage(std::list<Package> store, int maxCargo);
+	Storage(std::vector<Package> store, int maxCargo);
 
 	// True if added, false if not
 	bool add(Package pack);
@@ -34,5 +34,5 @@ private:
 	int virtualCargo_ = 0;
 	int maxCargo_ = 0;
 	std::string id_ = "N/A";
-	std::list<Package> store_;
+	std::vector<Package> store_;
 };

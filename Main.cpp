@@ -5,9 +5,9 @@
 
 int main() {
 	/*std::cout << "Stability test...";
-	for (int i = 0;;++i) {
-		if (!(i % 100))
-			std::cout << "ITERATION " << i << "\n";
+	for (int i = 0; i < 10000;++i) {
+		//if (!(i % 100))
+		//	std::cout << "ITERATION " << i << "\n";
 		Simulation simulation(3, 10);
 		for (int j = 0; j < 50; j++) {
 			simulation.process();

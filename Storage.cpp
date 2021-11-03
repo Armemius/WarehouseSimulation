@@ -1,3 +1,5 @@
+
+
 #include "Storage.h"
 #include <iterator>
 #include <iostream>
@@ -8,7 +10,7 @@ Storage::Storage(std::string id, int maxCargo) :
 	id_(id),
 	maxCargo_(maxCargo){}
 
-Storage::Storage(std::list<Package> store, int maxCargo) :
+Storage::Storage(std::vector<Package> store, int maxCargo) :
 	store_(store),
 	id_(store.begin()->name()),
 	maxCargo_(maxCargo) {
@@ -32,11 +34,9 @@ bool Storage::add(Package pack) {
 Package Storage::get(int index) {
 	if (index < 0 || store_.size() - 1 < index)
 		throw std::exception("Storage: index out of bounds");
-	std::list<Package>::iterator it = store_.begin();
-	std::advance(it, index);
 	cargo_--;
-	Package& pack = *it;
-	store_.erase(it);
+	Package pack = store_[index];
+	store_.erase(std::next(store_.begin(), index));
 	return pack;
 }
 
@@ -78,7 +78,5 @@ int Storage::getVCargo() {
 const Package& Storage::operator[](int index) {
 	if (index < 0 || store_.size() - 1 < index)
 		throw std::exception("Storage: index out of bounds");
-	std::list<Package>::iterator it = store_.begin();
-	std::advance(it, index);
-	return *it;
+	return store_[index];
 }

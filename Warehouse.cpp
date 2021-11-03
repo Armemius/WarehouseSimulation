@@ -15,7 +15,7 @@ void Warehouse::rot() {
 		for (int i = 0; i < it.second.cargo_; ++i, ++jt) {
 			jt->rot();
 			if (jt->isRotten()) {
-				it.second.get(i--);
+				//it.second.get(i--);
 			}
 		}
 	}
@@ -65,7 +65,10 @@ void Warehouse::process() {
 		}
 		int total = req100 * 100 + req50 * 50 + req25 * 25;
 		int index = 0;
-		for (auto& jt : storages_[it.type].store_) {
+		std::string type = it.type;
+		auto& store = storages_[type].store_;
+		auto tmp = *store.begin();
+		for (auto& jt : store) {
 			if (jt.count() == 100 && req100 > 0) {
 				req100--;
 				storages_[it.type].get(index--);
