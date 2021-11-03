@@ -10,7 +10,7 @@ class Report;
 
 class Warehouse : public ITransferPoint {
 public:
-	Warehouse(Supplier* supp);
+	Warehouse(Supplier* supp, int capacity, int foodTypes);
 
 	void rot();
 	void process();
@@ -30,24 +30,11 @@ public:
 	void transmit(Transmission trans) override;
 private:
 	bool isFirst_ = true;
-	int cash_ = 1000000;
+	int cash_ = 5000000;
+	int capacity_ = 100;
 	Supplier* supp_;
 	std::unordered_map<std::string, int> dayDemand_;
 	std::unordered_map<std::string, int> demand_;
-	std::unordered_map<std::string, Storage> storages_ = {
-		{ "egg", Storage("egg", 100) },
-		{ "fish", Storage("fish", 100) },
-		{ "meat", Storage("meat", 100) },
-		{ "apple", Storage("apple", 100) },
-		{ "pear", Storage("pear", 100) },
-		{ "milk", Storage("milk", 100) },
-		{ "water", Storage("water", 100) },
-		{ "bread", Storage("bread", 100) },
-		{ "cake", Storage("cake", 100) },
-		{ "napkins", Storage("napkins", 100) },
-		{ "soap", Storage("soap", 100) },
-		{ "shampoo", Storage("shampoo", 100) },
-		{ "coal", Storage("coal", 100) }
-	};
+	std::unordered_map<std::string, Storage> storages_;
 	std::vector<Request> requests_;
 };

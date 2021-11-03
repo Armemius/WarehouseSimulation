@@ -13,11 +13,12 @@ int main() {
 			simulation.process();
 		}
 		//system("cls");
-	}*/
-	std::cout << "Passed!\n";
-	Simulation simulation(3, 6);
+	}
+	std::cout << "Passed!\n";*/
+	Simulation simulation(1, 10, 100);
 	for (int i = 0; i < 50; ++i) {
 		simulation.process();
+		std::cout << "ITERATION " << i + 1 << "\n";
 		std::cout << simulation.report();
 		system("pause");
 		system("cls");

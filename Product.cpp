@@ -51,7 +51,14 @@ std::vector<std::string> Product::names = {
 	"napkins",
 	"soap",
 	"shampoo",
-	"coal"
+	"coal",
+	"beer",
+	"porrige",
+	"apple juice",
+	"cherry juice",
+	"crakers",
+	"domestos",
+	"tomato"
 };
 
 std::tr1::unordered_map<std::string, const Product> Product::list = {
@@ -67,5 +74,12 @@ std::tr1::unordered_map<std::string, const Product> Product::list = {
 	{"napkins", Product("napkins", 150)},
 	{"soap", Product("soap", 250)},
 	{"shampoo", Product("shampoo", 400)},
-	{"coal", Product("coal", 200)}
+	{"coal", Product("coal", 200)},
+	{"beer", Product("beer", 75)},
+	{"porrige", Product("porrige", 150, 10)},
+	{"apple juice", Product("apple juice", 100, 12)},
+	{"cherry juice", Product("cherry juice", 100, 12)},
+	{"crackers", Product("crakers", 5, 100)},
+	{"domestos", Product("domestos", 200)},
+	{"tomato", Product("tomato", 50, 9)}
 };

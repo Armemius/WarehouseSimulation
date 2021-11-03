@@ -17,7 +17,7 @@ private:
 
 class Simulation {
 public:
-	Simulation(int consumers, int foodTypes = 10);
+	Simulation(int consumers, int foodTypes = 10, int warehouseCapacity = 100);
 	void process();
 	Report report();
 
@@ -25,7 +25,7 @@ public:
 private:
 	Simulation();
 	int foodTypes_ = 10;
-	Warehouse warehouse_ = Warehouse(nullptr);
+	Warehouse warehouse_ = Warehouse(nullptr, 100, 10);
 	Supplier supplier_;
 	std::vector<Consumer> consumers_;
 };

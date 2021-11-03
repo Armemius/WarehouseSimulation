@@ -1,11 +1,13 @@
 #include "Warehouse.h"
 #include <random>
 
-Warehouse::Warehouse(Supplier* supp) : 
-	supp_(supp) {
-	for (int i = 0; i < Product::names.size(); ++i) {
+Warehouse::Warehouse(Supplier* supp, int capacity, int foodTypes) : 
+	supp_(supp),
+	capacity_(capacity) {
+	for (int i = 0; i < foodTypes; ++i) {
 		demand_.insert({ Product::names[i], 0 });
 		dayDemand_.insert({ Product::names[i], 0 });
+		storages_.insert({ Product::names[i], Storage(Product::names[i], capacity_)});
 	}
 }
 
@@ -15,7 +17,7 @@ void Warehouse::rot() {
 		for (int i = 0; i < it.second.cargo_; ++i, ++jt) {
 			jt->rot();
 			if (jt->isRotten()) {
-				//it.second.get(i--);
+				it.second.get(i--);
 			}
 		}
 	}
@@ -68,19 +70,24 @@ void Warehouse::process() {
 		std::string type = it.type;
 		auto& store = storages_[type].store_;
 		auto tmp = *store.begin();
+		int cash = 0;
 		for (auto& jt : store) {
 			if (jt.count() == 100 && req100 > 0) {
 				req100--;
-				storages_[it.type].get(index--);
+				auto sus = storages_[it.type].get(index--);
+				cash += sus.priceAll() * (0.6 + sus.freshness() * 0.5);
 			} else if (jt.count() == 50 && req50 > 0) {
 				req50--;
-				storages_[it.type].get(index--);
+				auto sus = storages_[it.type].get(index--);
+				cash += sus.priceAll() * (0.6 + sus.freshness() * 0.5);
 			} else if (jt.count() == 25 && req25 > 0) {
 				req25--;
-				storages_[it.type].get(index--);
+				auto sus = storages_[it.type].get(index--);
+				cash += sus.priceAll() * (0.6 + sus.freshness() * 0.5);
 			}
 			index++;
 		}
+		cash_ += cash;
 		answer(Answer(it.type, true, total, this), it.dest);
 	}
 	requests_.clear();
@@ -90,7 +97,6 @@ void Warehouse::process() {
 		int diff = demand_[name] * 3 - storages_[name].prodCount();
 		if (diff >= 50) {
 			const int count = std::min(demand_[name] * 3, storages_[name].free() * 100);
-			storages_[name].addVCargo(count / 100 + count % 100 / 50 + count % 50 / 25);
 			if (count > 500)
 				request(Request(it.first, count, this), supp_);
 		}
@@ -117,7 +123,6 @@ void Warehouse::processAnswer(Answer ans) {
 }
 
 void Warehouse::processOrder(Order ord) {
-	cash_ += ord.price;
 	transmit(Transmission(std::vector<Package>{Package(Product::list[ord.type], ord.count) }, ord.dest, 1));
 }
 
@@ -126,13 +131,13 @@ void Warehouse::processTransmission(Transmission trans) {
 	std::random_device rand_dev;
 	std::mt19937 rand_engine(rand_dev());
 	for (auto& pack : trans.packs) {
+		storages_[pack.name()].setVCargo(storages_[pack.name()].getVCargo() - 1);
 		if (defect(rand_engine) < 0.05) {
 			continue;
 		}
 		if (!storages_[pack.name()].add(pack)) {
-			break;
+			continue;
 		}
-		storages_[pack.name()].setVCargo(storages_[pack.name()].getVCargo() - 1);
 	}
 }
 
@@ -146,6 +151,7 @@ void Warehouse::answer(Answer ans, ITransferPoint* dest) {
 
 void Warehouse::order(Order ord, ITransferPoint* dest) {
 	cash_ -= ord.price;
+	storages_[ord.type].addVCargo(ord.count / 100 + ord.count % 100 / 50 + ord.count % 50 / 25);
 	dest->processOrder(ord);
 }
 

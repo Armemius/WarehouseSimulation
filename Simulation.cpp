@@ -12,7 +12,7 @@ std::ostream& operator<<(std::ostream& out, const Report& rep) {
 	out << "**[WAREHOUSE]**\n\r";
 	out << "Money: " << rep.warehouse_.cash_ << "\n\r";
 	for (auto& it : rep.warehouse_.storages_) {
-		out << "Storage(" << it.first << "):" << it.second.prodCount() << "\n\r";
+		out << "Storage(" << it.first << "):" << it.second.prodCount() << " [" << it.second.cargo_ << " + " << it.second.virtualCargo_ << " of "<< it.second.maxCargo_ << "]\n\r";
 	}
 	for (auto& it : rep.warehouse_.demand_) {
 		out << "Demand(" << it.first << "):" << it.second << "\n\r";
@@ -53,9 +53,9 @@ Simulation::Simulation() {
 	TransferService::packages_.clear();
 }
 
-Simulation::Simulation(int consumers, int foodTypes) : 
+Simulation::Simulation(int consumers, int foodTypes, int warehouseCapacity) : 
 	foodTypes_(foodTypes),
-	warehouse_(Warehouse(&supplier_)) {
+	warehouse_(Warehouse(&supplier_, warehouseCapacity, foodTypes)) {
 	TransferService::packages_.clear();
 	std::vector<Consumer> cons;
 	for (int i = 0; i < consumers; ++i) {
