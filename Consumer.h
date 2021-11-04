@@ -7,7 +7,7 @@ public:
 	Consumer(Warehouse* warehouse, int types);
 
 	void reloadWeights();
-	void process();
+	void process(DayReport* report, int index);
 
 	// Implementation
 	std::string name() const override;
@@ -21,7 +21,7 @@ public:
 	void transmit(Transmission trans) override;
 
 	friend class Simulation;
-	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
+	friend std::ostream& operator<<(std::ostream& out, const DayReport& rep);
 private:
 	int types_;
 	Warehouse* warehouse_;

@@ -1,5 +1,9 @@
-#include "Warehouse.h"
+#include "Simulation.h"
 #include <random>
+
+struct WarehouseReport_;
+struct TransferReport_;
+struct ConsumerReport_;
 
 Warehouse::Warehouse(Supplier* supp, int capacity, int foodTypes) : 
 	supp_(supp),
@@ -11,19 +15,24 @@ Warehouse::Warehouse(Supplier* supp, int capacity, int foodTypes) :
 	}
 }
 
-void Warehouse::rot() {
+void Warehouse::rot(DayReport& report) {
 	for (auto& it : storages_) {
 		auto jt = it.second.store_.begin();
 		for (int i = 0; i < it.second.cargo_; ++i, ++jt) {
 			jt->rot();
-			if (jt->isRotten()) {
+			if (jt->freshness() <= 0) {
+				report.warehouseReport.rotten[jt->name()] += jt->count();
+				jt--;
 				it.second.get(i--);
 			}
 		}
 	}
 }
 
-void Warehouse::process() {
+DayReport* reportG = nullptr;
+
+void Warehouse::process(DayReport& report) {
+	reportG = &report;
 	for (auto& it : dayDemand_) {
 		it.second = 0;
 	}
@@ -87,10 +96,12 @@ void Warehouse::process() {
 			}
 			index++;
 		}
-		cash_ += cash;
+		cash_ += cash * 1.3;
+		reportG->warehouseReport.sended[it.type] += total;
 		answer(Answer(it.type, true, total, this), it.dest);
 	}
 	requests_.clear();
+	reportG->warehouseReport.demand = dayDemand_;
 	for (auto& it : dayDemand_) {
 		const std::string name = it.first;
 		demand_[name] = (demand_[name] * 9 + dayDemand_[name]) / 10;
@@ -133,11 +144,11 @@ void Warehouse::processTransmission(Transmission trans) {
 	for (auto& pack : trans.packs) {
 		storages_[pack.name()].setVCargo(storages_[pack.name()].getVCargo() - 1);
 		if (defect(rand_engine) < 0.05) {
+			reportG->warehouseReport.defects[pack.name()] += pack.count();
 			continue;
 		}
-		if (!storages_[pack.name()].add(pack)) {
-			continue;
-		}
+		reportG->warehouseReport.get[pack.name()] += pack.count();
+		storages_[pack.name()].add(pack);
 	}
 }
 
@@ -152,6 +163,7 @@ void Warehouse::answer(Answer ans, ITransferPoint* dest) {
 void Warehouse::order(Order ord, ITransferPoint* dest) {
 	cash_ -= ord.price;
 	storages_[ord.type].addVCargo(ord.count / 100 + ord.count % 100 / 50 + ord.count % 50 / 25);
+	reportG->warehouseReport.requested[ord.type] += ord.count;
 	dest->processOrder(ord);
 }
 

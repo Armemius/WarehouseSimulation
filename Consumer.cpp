@@ -1,3 +1,4 @@
+#include "Simulation.h"
 #include "Consumer.h"
 #include <random>
 
@@ -25,12 +26,17 @@ void Consumer::reloadWeights() {
 	}
 }
 
-void Consumer::process() {
+DayReport* reportC;
+int indexC = 0;
+void Consumer::process(DayReport* report, int index) {
+	indexC = index;
+	reportC = report;
 	for (int i = 0; i < types_; ++i) {
 		const std::string& name = Product::names[i];
 		products_[name] -= weights_[name];
 		int cnt = products_[name] + virtualProducts_[name];
 		if (cnt < 0) {
+			report->consumersReport[index].requested[name] += weights_[name] * 4;
 			request(Request(name, weights_[name] * 4, this), warehouse_);
 		}
 	}
@@ -78,6 +84,7 @@ void Consumer::answer(Answer ans, ITransferPoint* dest) {
 
 void Consumer::order(Order ord, ITransferPoint* dest) {
 	virtualProducts_[ord.type] += ord.count;
+	reportC->consumersReport[indexC].sended[ord.type] += ord.count;
 	dest->processOrder(ord);
 }
 

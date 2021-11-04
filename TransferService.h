@@ -6,15 +6,15 @@
 #include "ITransferPoint.h"
 
 class Transmission;
-class Report;
+class DayReport;
 
 class TransferService {
 public:
 	static void addTrans(Transmission trans);
-	static void process();
-	friend class Report;
+	static void process(DayReport& report);
+	friend class DayReport;
 	friend class Simulation;
-	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
+	friend std::ostream& operator<<(std::ostream& out, const DayReport& rep);
 private:
 	TransferService();
 	static std::list<Transmission> packages_;

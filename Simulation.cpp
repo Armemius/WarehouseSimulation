@@ -3,12 +3,31 @@
 #include <unordered_map>
 
 // Report
-Report::Report(Warehouse warehouse, std::vector<Consumer> consumers) : 
+DayReport::DayReport(Warehouse warehouse, std::vector<Consumer> consumers, int foodTypes, int consums) :
 	warehouse_(warehouse),
 	consumers_(consumers),
-	packages_(TransferService::packages_) {}
+	packages_(TransferService::packages_),
+	foodTypes(foodTypes) {
+	for (int i = 0; i < consums; ++i) {
+		this->consumersReport.push_back(ConsumerReport_());
+	}
+	for (int i = 0; i < foodTypes; ++i) {
+		this->warehouseReport.get.insert({ Product::names[i], 0 });
+		this->warehouseReport.defects.insert({ Product::names[i], 0 });
+		this->warehouseReport.rotten.insert({ Product::names[i], 0 });
+		this->warehouseReport.products.insert({ Product::names[i], 0 });
+		this->warehouseReport.packages.insert({ Product::names[i], 0 });
+		this->warehouseReport.demand.insert({ Product::names[i], 0 });
+		this->warehouseReport.sended.insert({ Product::names[i], 0 });
+		this->warehouseReport.requested.insert({ Product::names[i], 0 });
+		for (auto& it : consumersReport) {
+			it.requested.insert({ Product::names[i], 0 });
+			it.sended.insert({ Product::names[i], 0 });
+		}
+	}
+}
 
-std::ostream& operator<<(std::ostream& out, const Report& rep) {
+std::ostream& operator<<(std::ostream& out, const DayReport& rep) {
 	out << "**[WAREHOUSE]**\n\r";
 	out << "Money: " << rep.warehouse_.cash_ << "\n\r";
 	for (auto& it : rep.warehouse_.storages_) {
@@ -38,6 +57,10 @@ std::ostream& operator<<(std::ostream& out, const Report& rep) {
 	}
 	out << "\n\r**[Transfer]**\n\r";
 	for (auto& it : rep.packages_) {
+		if (it.dest == nullptr) {
+			out << "(" << it.packs[0].name() << " x" << it.packs.size() << "; to: " << "junkyard" << "; in:" << it.time << ")\n\r";
+			continue;
+		}
 		std::string name = it.dest->name();
 #ifdef DEBUG
 		std::cout << "COUNT - " << it.packs.size() <<" \n\r";
@@ -64,36 +87,55 @@ Simulation::Simulation(int consumers, int foodTypes, int warehouseCapacity) :
 	consumers_ = cons;
 }
 
-void Simulation::process() {
+DayReport Simulation::process() {
+	DayReport report(warehouse_, consumers_, foodTypes_, consumers_.size());
+	int startCash = warehouse_.cash_;
 #ifdef DEBUG
 	std::cout << "WAREHOUSE - ROT\n\r";
 #endif
-	warehouse_.rot();
+	warehouse_.rot(report);
 #ifdef DEBUG
 	std::cout << "TRANSFER SERVICE - PROCESS\n\r";
 #endif
-	TransferService::process();
+	TransferService::process(report);
 #ifdef DEBUG
 	std::cout << "CONSUMERS - PROCESS\n\r";
 #endif
+	int index = 0;
 	for (auto& it : consumers_) {
 		it.reloadWeights();
-		it.process();
+		it.process(&report, index++);
 	}
 #ifdef DEBUG
 	std::cout << "WAREHOUSE - PROCESS\n\r";
 #endif
-	warehouse_.process();
+	warehouse_.process(report);
 #ifdef DEBUG
 	std::cout << "SIMULATION PROCESS ITERATION COMPLETE\n\r";
 #endif
+	for (auto& it : warehouse_.storages_) {
+		report.warehouseReport.products[it.first] = it.second.prodCount();
+		report.warehouseReport.packages[it.first] = it.second.cargo();
+	}
+
+	int finCash = warehouse_.cash_;
+	report.warehouseReport.cash = finCash;
+	report.warehouseReport.income = finCash - startCash;
+	return report;
 }
 
-Report Simulation::report() {
+const std::vector<DayReport>& Simulation::genReports(int iters) {
+	for (int i = 0; i < iters; ++i) {
+		reports_.push_back(this->process());
+	}
+	return reports_;
+}
+
+DayReport Simulation::report() {
 #ifdef DEBUG
 	std::cout << "REPORT\n\r";
 #endif
-	Report report(warehouse_, consumers_);
+	DayReport report(warehouse_, consumers_, foodTypes_, consumers_.size());
 #ifdef DEBUG
 	std::cout << "REPORT COMPLETE\n\r";
 #endif

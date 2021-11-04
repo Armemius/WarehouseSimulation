@@ -4,7 +4,7 @@
 #include <string>
 #include <list>
 
-class Report;
+class DayReport;
 
 class Storage {
 public:
@@ -28,7 +28,7 @@ public:
 	const Package& operator[](int index);
 
 	friend class Warehouse;
-	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
+	friend std::ostream& operator<<(std::ostream& out, const DayReport& rep);
 private:
 	int cargo_ = 0;
 	int virtualCargo_ = 0;

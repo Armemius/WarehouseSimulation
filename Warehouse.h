@@ -6,17 +6,17 @@
 #include <vector>
 #include <unordered_map>
 
-class Report;
+class DayReport;
 
 class Warehouse : public ITransferPoint {
 public:
 	Warehouse(Supplier* supp, int capacity, int foodTypes);
 
-	void rot();
-	void process();
+	void rot(DayReport& report);
+	void process(DayReport& report);
 
 	friend class Simulation;
-	friend std::ostream& operator<<(std::ostream& out, const Report& rep);
+	friend std::ostream& operator<<(std::ostream& out, const DayReport& rep);
 
 	// Implementation
 	std::string name() const override;
