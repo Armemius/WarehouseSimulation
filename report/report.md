@@ -307,7 +307,6 @@ public:
 ## Схема зависимостей классов
 ![Dependencies](./classes.png)
 
-## Схема UI
-Планируется использовать QT
+## Схема UI (QT)
 ![UI Preview](./ui1.png)
 ![UI Preview](./ui2.png)
