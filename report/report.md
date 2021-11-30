@@ -308,5 +308,6 @@ public:
 ![Dependencies](./classes.png)
 
 ## Схема UI
+Планируется использовать QT
 ![UI Preview](./ui1.png)
 ![UI Preview](./ui2.png)
